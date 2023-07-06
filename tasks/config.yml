@@ -1,0 +1,24 @@
+---
+
+- name: Configration tasks
+  tags:
+    - needrestart_config
+    - needrestart
+  become: true
+  block:
+
+    - name: Merge configration
+      ansible.builtin.set_fact:
+        needrestart_config_options_merged: "{{ needrestart_config_options | ansible.builtin.combine(needrestart_config_options_default, recursive=True) }}"
+
+    - name: Debug variables
+      ansible.builtin.include_tasks: debug/config.yml
+      when: needrestart_debug is defined and needrestart_debug
+
+    - name: Manage needrestart main configration
+      ansible.builtin.template:
+        src: needrestart.conf.j2
+        dest: "{{ needrestart_config_dir }}/needrestart.conf"
+        owner: root
+        group: root
+        mode: 0644

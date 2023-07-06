@@ -1,0 +1,13 @@
+galaxy_info:
+  role_name: needrestart
+  namespace: autechgemz
+  author: autechgemz@gmail.com 
+  description: needrestart checks which daemons need to be restarted after library upgrades.
+  license: MIT
+  min_ansible_version: "2.4"
+  galaxy_tags: []
+  platforms:
+    - name: "Ubuntu"
+      release:
+        - jammy
+dependencies: []

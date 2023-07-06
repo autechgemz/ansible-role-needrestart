@@ -1,0 +1,22 @@
+---
+
+- name: Dropin configration tasks - debug
+  tags:
+    - needrestart_config
+    - needrestart
+  block:
+
+    - name: Debug needrestart_dropin_config_options_default
+      ansible.builtin.debug:
+        var: needrestart_dropin_config_options_default
+      when: needrestart_debug is defined and needrestart_debug
+
+    - name: Debug needrestart_dropin_config_options
+      ansible.builtin.debug:
+        var: needrestart_dropin_config_options
+      when: needrestart_debug is defined and needrestart_debug
+
+    - name: Debug needrestart_dropin_config_options_merged
+      ansible.builtin.debug:
+        var: needrestart_dropin_config_options_merged
+      when: needrestart_debug is defined and needrestart_debug

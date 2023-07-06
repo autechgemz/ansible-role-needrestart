@@ -1,0 +1,31 @@
+---
+
+- name: Configration tasks
+  tags:
+    - needrestart_config
+    - needrestart
+  become: true
+  block:
+
+    - name: Merge configration
+      ansible.builtin.set_fact:
+        needrestart_dropin_config_options_merged: "{{ needrestart_dropin_config_options | ansible.builtin.combine(needrestart_dropin_config_options_default, recursive=True) }}"
+
+    - name: Debug variables
+      ansible.builtin.include_tasks: debug/dropin.yml
+      when: needrestart_debug is defined and needrestart_debug
+
+    - name: Manage needrestart dropin configration
+      when: needrestart_dropin_config_options is defined and needrestart_dropin_config_options
+      ansible.builtin.template:
+        src: needrestart.dropin.conf.j2
+        dest: "{{ needrestart_config_dir }}/conf.d/override.conf"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Manage needrestart dropin configration
+      when: needrestart_dropin_config_options is undefined or not needrestart_dropin_config_options
+      ansible.builtin.file:
+        path: "{{ needrestart_config_dir }}/conf.d/override.conf"
+        state: absent

@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+
+{% for keys, values in needrestart_dropin_config_options_merged.items() %}
+{%   if not values %}
+{%   elif values is string and (values is not iterable or values is not mapping) %}
+$nrconf{{ '{' }}{{ keys }}{{ '}' }} = '{{ values }}';
+{%   elif values is integer %}
+$nrconf{{ '{' }}{{ keys }}{{ '}' }} = {{ values }};
+{%   elif values is iterable %}
+$nrconf{{ '{' }}{{ keys }}{{ '}' }} = [
+{%     for value in values %}
+    {{ value }},
+{%     endfor %}
+];
+{%   endif %}
+{% if values is mapping %} 
+$nrconf{{ '{' }}{{ keys }}{{ '}' }} = {
+{%   for key, value in values.items() %}
+{%     if value is string and (value is not iterable or value is not mapping) %}
+    {{ key }} => '{{ value }}',
+{%     elif value is integer %}
+    {{ key }} => {{ value }},
+{%     elif value is iterable %}
+    {{ key }} = [
+{%       for v in value %}
+    {{ v }},
+{%       endfor %}
+]
+{%     endif %}
+{%   endfor %}
+};
+{% endif %}
+{% endfor %}

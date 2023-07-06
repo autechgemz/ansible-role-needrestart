@@ -1,0 +1,15 @@
+---
+
+- name: Installation tasks
+  when: ansible_os_family == 'Debian'
+  tags:
+    - needrestart_install
+    - needrestart
+  become: true
+  block:
+  - name: Install packages
+    ansible.builtin.apt:
+      name: ["{{ item }}"]
+      update_cache: true
+      state: "{{ needrestart_package_ensure }}"
+    with_items: "{{ needrestart_package_name }}"

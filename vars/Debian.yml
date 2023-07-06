@@ -1,0 +1,6 @@
+---
+
+needrestart_package_name:
+  - needrestart
+
+needrestart_config_dir: '/etc/needrestart'
