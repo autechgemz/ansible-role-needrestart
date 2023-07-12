@@ -9,7 +9,6 @@
   block:
   - name: Install packages
     ansible.builtin.apt:
-      name: ["{{ item }}"]
+      name: "{{ needrestart_package_name }}"
       update_cache: true
       state: "{{ needrestart_package_ensure }}"
-    with_items: "{{ needrestart_package_name }}"
